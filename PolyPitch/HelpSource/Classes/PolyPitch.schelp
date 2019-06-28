@@ -1,0 +1,123 @@
+TITLE:: PolyPitch
+summary:: Polyphonic pitch tracker
+categories:: Extensions, UGens>Machine Listening, UGens>Analysis>Pitch, UGens>Analysis>Amplitude
+related:: Classes/Tartini, Classes/Pitch, Classes/Amplitude
+
+DESCRIPTION::
+Polyphonic pitch tracker implementing:
+
+Anssi Klapuri (2008) Multipitch analysis of polyphonic music and speech signals using an auditory model. IEEE Transactions on Audio, Speech, and Language Processing 16(2): 255-266
+
+
+The parameter set-up is quite delicate, but some parameters from the paper are made available. The UGen requires a sampling rate of 44100, and 64 sample blocksize.
+
+
+The current codebase uses libsamplerate internally (http://www.mega-nerd.com/SRC/), by Erik de Castro Lopo. The FFT implementation is also currently based on Mac specific Accelerate library code.
+
+
+
+
+CLASSMETHODS::
+
+METHOD:: kr
+The parameter set-up is quite delicate, but some parameters from the paper are made available. The UGen requires a sampling rate of 44100, and 64 sample blocksize.
+
+ARGUMENT:: input
+input signal
+
+ARGUMENT:: maxvoices
+Maximum polyphony tracked.
+
+ARGUMENT:: levelcompressionfactor
+Equation (5) in the paper, this value is v-1
+
+ARGUMENT:: mixleftterm
+Sets relative weight of left term in equation (10), that is, stigma in equation (11). Klapuri notes that high values here are fine for non-drum signals, but drum signals may require more noise robust frontend via a lower mixleftterm.
+
+ARGUMENT:: torprec
+Precision of search in Algorithm 1 (p. 260)
+
+ARGUMENT:: cancellationweight
+d in Table 1, p.261
+
+ARGUMENT:: polyphonyestimategamma
+gamma in equation (17)
+
+returns:: The UGen returns an array of outputs in the format:
+
+
+[numberofvoicesdetected, frequency in Hz of voice 1, salience of voice 1, frequency of voice 2, salience of voice 2, ...]
+
+
+INSTANCEMETHODS::
+
+
+EXAMPLES::
+
+code::
+(
+{
+	var in, tracked;
+
+	//in = Mix(SinOsc.ar([440,990,775],0,0.1));
+	in = Mix(Saw.ar([440,990,775],0.1));
+	//in= SoundIn.ar;
+
+	tracked=PolyPitch.kr(in,6,-0.1,10.0);
+	tracked.poll;
+
+	//Out.ar(0,Pan2.ar(in));
+}.play
+)
+
+
+(
+{
+	var in, tracked;
+
+	in= SoundIn.ar;
+	tracked=PolyPitch.kr(in,6,-0.1,10.0);
+	SendReply.kr(Impulse.kr(44100/2048),'polyparam',tracked);
+}.play
+)
+
+(
+	SynthDef(\ppsine,{arg amp=0.0, freq= 440,pan=0.0;
+		Out.ar(0,Pan2.ar(Saw.ar(freq.lag(0.01),amp.lag(0.01)),pan))
+	}).add;
+)
+
+(
+	b = Array.fill(6,{Synth(\ppsine)})
+)
+
+
+(
+	var count= 0;
+	o.remove;
+	o = OSCresponder(nil, 'polyparam', { |t, r, msg|
+		var numvoices = msg[3];
+		count= (count+1)%1;
+		if(count==0) {
+			msg.postln;
+			6.do{|i| var index = 4+(i*2);
+				if(i<numvoices) {
+					b[i].set(\freq,msg[index]*4,\amp,0.2); //*(msg[index+1])
+				}
+				{
+					b[i].set(\amp,0.0);
+				}
+			};
+		}
+	}).add;
+)
+
+
+c = {(SoundIn.ar*0.5)!2}.play
+
+c.free;
+
+
+
+
+::
