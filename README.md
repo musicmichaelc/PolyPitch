@@ -7,7 +7,7 @@ This is a [SC](https://supercollider.github.io/) plug-in for multiple fundamenta
 
 PolyPitch is released under [GNU GPL 3](sources/COPYING), for [SuperCollider 3](https://supercollider.github.io/), by [Nick Collins](https://composerprogrammer.com/index.html)
 
-*Note by Michael Christensen: I provided this [SuperCollider](https://supercollider.github.io/) plugin here from [Nick Collin's website](https://composerprogrammer.com/code.html#SC) in order to provide a convenient way to download a copy of PolyPitch with help files that have been updated to the .schelp format (for newer versions of SuperCollider) as well as up to date precompiled binaries for the newest SuperCollider version (files ending with .scx or .so etc).*
+*Note: I provided this [SuperCollider](https://supercollider.github.io/) plugin here from [Nick Collin's website](https://composerprogrammer.com/code.html#SC) in order to provide a convenient way to download a copy of PolyPitch with help files that have been updated to the .schelp format (for newer versions of SuperCollider) as well as up to date precompiled binaries for the newest SuperCollider version (files ending with .scx or .so etc).*
 
 
 
