@@ -14,7 +14,7 @@ PolyPitch is released under [GNU GPL 3](sources/COPYING), for [SuperCollider 3](
 ### Installation
 To install: put the PolyPitch folder in your SC extensions directory. Copy into that folder a PolyPitch.scx file. There are some prebuilt ones provided, and compilation instructions also follow. 
 
-Prebuilt binaries can be found on the "release" tab above.
+Prebuilt binaries can be found on the [\"releases\"](https://github.com/BansMarbol/PolyPitch/releases) tab above.
 
 ### Compiling
 To compile for platforms other than Mac, using the SC native FFT interface, comment out:
