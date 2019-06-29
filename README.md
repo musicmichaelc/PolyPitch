@@ -35,7 +35,7 @@ make
 
 Make sure in `CMakeLists.txt` that the 32bit library linking line is uncommented and 64bit is commented
 
-Then on the command line \(assuming `CMake` is installed and you have the source code of SuperCollider at /data/gitprojects/supercollider\):
+Then on the command line \(assuming `CMake` is installed and you have the source code of SuperCollider at `/data/gitprojects/supercollider`\):
 ```
 cd into build directory
 cmake -DSC_PATH=/data/gitprojects/supercollider -DCMAKE_OSX_ARCHITECTURES='i386' ..
